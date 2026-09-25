@@ -7,92 +7,74 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <div class="nav">
-    <div class="brand"><span class="mark">ل</span><div><b>مزاد اللوحات</b><small>لوحات مميزة</small></div></div>
-    <button class="admin" id="openAdmin">لوحة الإدارة</button>
-  </div>
+<header>
+  <div class="brand"><div class="logo">ل</div><div><b>مزاد اللوحات</b><small>لوحات مميزة</small></div></div>
+  <button id="adminBtn">لوحة الإدارة</button>
 </header>
 
 <main>
-  <section class="intro">
-    <span class="green-dot"></span><span id="stateText">المزاد مباشر</span>
-    <h1 id="title">لوحة مميزة</h1>
-    <p>المزايدة على اللوحة الحالية</p>
-  </section>
+  <div class="live"><i></i><span id="stateText">المزاد مباشر</span></div>
+  <h1 id="auctionTitle">لوحة مميزة</h1>
+  <p class="sub">المزاد على اللوحة الحالية</p>
 
   <section class="plate-card">
-    <div class="plate" id="plate">
-      <div class="plate-left">
-        <div class="ar-num" id="numAr">٥١٥</div>
-        <div class="en-num" id="numEn">515</div>
-      </div>
-      <div class="saudi-logo" id="saudiLogo"></div>
-      <div class="letters">
-        <div id="letAr">هـ ن ر</div>
-        <strong id="letEn">R N H</strong>
-      </div>
-      <div class="ksa"><small>السعودية</small><b>K<br>S<br>A</b></div>
+    <div class="plate-stage" id="plateStage">
+      <img id="plateImg" src="design2.jpg">
+      <div class="editable number-ar" id="numberAr">٥١٥</div>
+      <div class="editable number-en" id="numberEn">515</div>
+      <div class="editable letters-ar" id="lettersAr">هـ ن ر</div>
+      <div class="editable letters-en" id="lettersEn">R N H</div>
     </div>
+  </section>
+
+  <section class="stats">
+    <div><small>السعر الحالي</small><strong><span id="price">25,000</span> ريال</strong></div>
+    <div><small>الزيادة</small><strong><span id="increment">500</span> ريال</strong></div>
+    <div><small>الوقت المتبقي</small><strong id="timer">00:30:00</strong></div>
   </section>
 
   <section class="details">
-    <div><span>السعر الحالي</span><b><i id="price">25,000</i> ريال</b></div>
-    <div><span>مقدار الزيادة</span><b><i id="inc">500</i> ريال</b></div>
-    <div><span>الوقت المتبقي</span><b id="timer">00:30:00</b></div>
-  </section>
-
-  <section class="info">
-    <div class="info-card">
-      <h2>تفاصيل اللوحة</h2>
-      <div class="rows">
-        <p><span>الرقم</span><b id="infoNum">515</b></p>
-        <p><span>الحروف</span><b id="infoLetters">R N H</b></p>
-        <p><span>نوع اللوحة</span><b id="type">خصوصي</b></p>
-      </div>
+    <div><h2>بيانات اللوحة</h2>
+      <p><span>الرقم</span><b id="infoEn">515</b></p>
+      <p><span>الحروف</span><b id="infoLetters">R N H</b></p>
+      <p><span>التصميم</span><b id="infoDesign">السيفين والنخلة</b></p>
     </div>
-    <div class="info-card">
-      <h2>حالة المزاد</h2>
-      <div class="live"><span></span><b id="auctionStatus">المزاد مفتوح</b></div>
-      <p class="note">هذه الصفحة مخصصة لعرض اللوحة وإدارة المزاد من لوحة الإدارة.</p>
+    <div><h2>حالة المزاد</h2><div class="open"><i></i><b id="status">المزاد مفتوح</b></div>
+      <p class="note">الزوار يشاهدون اللوحة فقط. تعديل بيانات اللوحة متاح لك من لوحة الإدارة.</p>
     </div>
   </section>
 </main>
-
-<footer>مزاد اللوحات</footer>
 
 <div class="modal hidden" id="modal">
  <div class="panel">
   <button class="close" id="close">×</button>
   <div id="loginBox">
-   <span class="label">دخول خاص</span><h2>لوحة الإدارة</h2>
-   <p>هذه الصفحة للإدارة فقط.</p>
-   <input id="pass" type="password" placeholder="كلمة المرور">
-   <button class="save" id="login">دخول</button>
-   <small>الافتراضي: 1234</small><div class="error" id="err"></div>
+   <small>دخول الإدارة</small><h2>لوحة التحكم</h2>
+   <input id="password" type="password" placeholder="كلمة المرور">
+   <button class="green" id="login">دخول</button>
+   <div id="error"></div>
   </div>
+
   <div id="adminBox" class="hidden">
-   <span class="label">إدارة اللوحة</span><h2>تعديل بيانات المزاد</h2>
+   <small>تحكم كامل بالمزاد</small><h2>إعداد اللوحة الحالية</h2>
    <div class="grid">
-    <label>اسم اللوحة<input id="fTitle"></label>
-    <label>نوع اللوحة<select id="fType"><option>خصوصي</option><option>نقل</option><option>دراجة نارية</option></select></label>
+    <label>اسم المزاد<input id="fTitle"></label>
+    <label>تصميم اللوحة<select id="fDesign">
+      <option value="design1.jpg">التصميم 1</option>
+      <option value="design2.jpg">التصميم 2 - السيفين والنخلة</option>
+      <option value="design3.jpg">التصميم 3</option>
+      <option value="design4.jpg">التصميم 4 - الدرعية</option>
+      <option value="design5.jpg">التصميم 5</option>
+    </select></label>
     <label>الرقم العربي<input id="fAr"></label>
     <label>الرقم الإنجليزي<input id="fEn"></label>
-    <label>الحروف العربية<input id="fLAr"></label>
-    <label>الحروف الإنجليزية<input id="fLEn"></label>
-    <label>السعر<input id="fPrice" type="number"></label>
-    <label>الزيادة<input id="fInc" type="number"></label>
+    <label>الحروف العربية<input id="fLar"></label>
+    <label>الحروف الإنجليزية<input id="fLen"></label>
+    <label>السعر الحالي<input id="fPrice" type="number"></label>
+    <label>مقدار الزيادة<input id="fInc" type="number"></label>
     <label>مدة المزاد بالدقائق<input id="fMin" type="number"></label>
    </div>
-   <label>الشعار
-    <div class="logo-options">
-      <button data-logo="saudi" class="logo-option active"><span id="optSaudi"></span>السيفان والنخلة</button>
-      <button data-logo="black" class="logo-option"><span id="optBlack"></span>أسود</button>
-      <button data-logo="none" class="logo-option"><span>—</span>بدون شعار</button>
-    </div>
-   </label>
-   <label>رفع شعار خاص<input id="logoFile" type="file" accept="image/*"></label>
-   <div class="buttons"><button class="save" id="save">حفظ وبدء المزاد</button><button id="stop">إيقاف</button><button id="logout">خروج</button></div>
+   <div class="actions"><button class="green" id="save">حفظ وبدء المزاد</button><button id="stop">إيقاف المزاد</button></div>
   </div>
  </div>
 </div>
