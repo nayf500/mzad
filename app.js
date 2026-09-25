@@ -1,0 +1,18 @@
+const K="luha_v4",P="luha_pass_v4";
+const def={title:"لوحة مميزة",type:"خصوصي",ar:"٥١٥",en:"515",lar:"هـ ن ر",len:"R N H",price:25000,inc:500,end:Date.now()+1800000,active:true,logo:"saudi",custom:""};
+let s=JSON.parse(localStorage.getItem(K)||"null")||def;
+const $=x=>document.getElementById(x);
+function save(){localStorage.setItem(K,JSON.stringify(s))}
+function svg(c="#168047"){return `<svg viewBox="0 0 100 100"><path d="M50 29C43 20 43 10 50 4C57 10 57 20 50 29Z" fill="${c}"/><path d="M50 27V61M50 39C36 31 27 34 18 41M50 47C64 39 73 42 82 49" fill="none" stroke="${c}" stroke-width="4.5"/><path d="M20 68Q50 48 80 68M24 61L76 77M76 61L24 77" fill="none" stroke="${c}" stroke-width="4.2" stroke-linecap="round"/></svg>`}
+function render(){ $("title").textContent=s.title;$("numAr").textContent=s.ar;$("numEn").textContent=s.en;$("letAr").textContent=s.lar;$("letEn").textContent=s.len;$("price").textContent=Number(s.price).toLocaleString("en-US");$("inc").textContent=Number(s.inc).toLocaleString("en-US");$("infoNum").textContent=s.en;$("infoLetters").textContent=s.len;$("type").textContent=s.type;$("auctionStatus").textContent=s.active?"المزاد مفتوح":"المزاد متوقف";$("stateText").textContent=s.active?"المزاد مباشر":"المزاد متوقف";$("saudiLogo").innerHTML=s.custom?`<img src="${s.custom}" style="width:80%;height:80%;object-fit:contain">`:s.logo==="black"?svg("#111"):s.logo==="none"?"":svg();fill()}
+function fill(){$("fTitle").value=s.title;$("fType").value=s.type;$("fAr").value=s.ar;$("fEn").value=s.en;$("fLAr").value=s.lar;$("fLEn").value=s.len;$("fPrice").value=s.price;$("fInc").value=s.inc;$("fMin").value=Math.max(1,Math.ceil((s.end-Date.now())/60000));document.querySelectorAll(".logo-option").forEach(b=>b.classList.toggle("active",b.dataset.logo===s.logo&&!s.custom))}
+function tick(){let d=Math.max(0,s.end-Date.now());if(s.active&&d===0){s.active=false;save();render()}let h=Math.floor(d/3600000),m=Math.floor(d%3600000/60000),q=Math.floor(d%60000/1000);$("timer").textContent=[h,m,q].map(x=>String(x).padStart(2,"0")).join(":")}
+$("openAdmin").onclick=()=>{$("modal").classList.remove("hidden");$("loginBox").classList.remove("hidden");$("adminBox").classList.add("hidden")}
+$("close").onclick=()=>$("modal").classList.add("hidden");
+$("login").onclick=()=>{let p=localStorage.getItem(P)||"1234";if($("pass").value===p){$("loginBox").classList.add("hidden");$("adminBox").classList.remove("hidden");fill()}else $("err").textContent="كلمة المرور غير صحيحة"}
+document.querySelectorAll(".logo-option").forEach(b=>b.onclick=()=>{s.logo=b.dataset.logo;s.custom="";document.querySelectorAll(".logo-option").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()})
+$("logoFile").onchange=e=>{let f=e.target.files?.[0];if(!f)return;let r=new FileReader();r.onload=()=>{s.custom=r.result;s.logo="custom";render()};r.readAsDataURL(f)}
+$("save").onclick=()=>{s.title=$("fTitle").value||"لوحة مميزة";s.type=$("fType").value;s.ar=$("fAr").value;s.en=$("fEn").value;s.lar=$("fLAr").value;s.len=$("fLEn").value;s.price=+($("fPrice").value||0);s.inc=+($("fInc").value||500);s.end=Date.now()+Math.max(1,+($("fMin").value||60))*60000;s.active=true;save();render();$("modal").classList.add("hidden")}
+$("stop").onclick=()=>{s.active=false;save();render()}
+$("logout").onclick=()=>{$("modal").classList.add("hidden")}
+$("optSaudi").innerHTML=svg();$("optBlack").innerHTML=svg("#111");render();tick();setInterval(tick,1000)
